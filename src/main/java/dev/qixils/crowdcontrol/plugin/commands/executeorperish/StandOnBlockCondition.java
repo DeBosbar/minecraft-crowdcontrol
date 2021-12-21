@@ -5,15 +5,16 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 public class StandOnBlockCondition implements SuccessCondition {
     private final Set<Material> blocks;
     private final Component component;
+    private List<World.Environment> allowedEnvironments = new ArrayList<>();
 
     public StandOnBlockCondition(String displayText, Material displayItem, Material... otherItems) {
         this.blocks = EnumSet.of(displayItem, otherItems);
@@ -27,6 +28,16 @@ public class StandOnBlockCondition implements SuccessCondition {
     public StandOnBlockCondition(Component display, Material first, Material... other) {
         this.blocks = EnumSet.of(first, other);
         this.component = Component.text("Stand on ").append(display);
+    }
+
+    public StandOnBlockCondition allowInEnvironment(World.Environment worldEnvironment) {
+        this.allowedEnvironments.add(worldEnvironment);
+        return this;
+    }
+
+    @Override
+    public List<World.Environment> getAllowedEnvironments() {
+        return this.allowedEnvironments;
     }
 
     @Override

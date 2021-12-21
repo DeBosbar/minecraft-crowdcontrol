@@ -53,7 +53,7 @@ public class DoOrDieCommand extends VoidCommand {
     protected void voidExecute(@NotNull List<@NotNull Player> ignored, @NotNull Request request) {
         new TimedEffect(request, COOLDOWN, effect -> {
             List<Player> players = plugin.getPlayers(request);
-            List<SuccessCondition> conditions = new ArrayList<>(Condition.items());
+            List<SuccessCondition> conditions = new ArrayList<>(Condition.getValidItemsForEnvironments(players.stream().map(p -> p.getWorld().getEnvironment()).toList()));
             Collections.shuffle(conditions, rand);
             SuccessCondition condition = null;
             while (condition == null && !conditions.isEmpty()) {
